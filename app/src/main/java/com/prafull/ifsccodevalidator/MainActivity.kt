@@ -142,7 +142,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 if (bankDetails != null) {
                     Column(Modifier.fillMaxSize()) {
                         Text(text = "Bank Name  : ${bankDetails!!.bank}")
-                        Text(text = "Branch     :    ${bankDetails!!.branch}")
+                        Text(text = "Branch     : ${bankDetails!!.branch}")
                         Text(text = "Address    : ${bankDetails!!.address}")
                         Text(text = "City       : ${bankDetails!!.city}")
                         Text(text = "District   : ${bankDetails!!.district}")
