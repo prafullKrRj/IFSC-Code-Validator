@@ -7,7 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,7 +33,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.prafull.ifsccodevalidator.ui.theme.IFSCCodeValidatorTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -114,8 +118,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
                                         if (response.exceptions is Exceptions.NetworkIssue) {
                                             networkIssue = true
                                             errorText = "Network Issue"
-
                                         } else {
+                                            networkIssue = false
                                             if (response.message != null) {
                                                 errorText = response.message
                                                 return@withContext
@@ -141,26 +145,57 @@ fun MainScreen(modifier: Modifier = Modifier) {
             } else {
                 if (bankDetails != null) {
                     Column(Modifier.fillMaxSize()) {
-                        Text(text = "Bank Name  : ${bankDetails!!.bank}")
-                        Text(text = "Branch     : ${bankDetails!!.branch}")
-                        Text(text = "Address    : ${bankDetails!!.address}")
-                        Text(text = "City       : ${bankDetails!!.city}")
-                        Text(text = "District   : ${bankDetails!!.district}")
-                        Text(text = "State      : ${bankDetails!!.state}")
-                        Text(text = "IFSC       : ${bankDetails!!.ifsc}")
-                        Text(text = "MICR       : ${bankDetails!!.micr}")
-                        Text(text = "NEFT       : ${bankDetails!!.neft}")
-                        Text(text = "RTGS       : ${bankDetails!!.rtgs}")
-                        Text(text = "IMPS       : ${bankDetails!!.imps}")
-                        Text(text = "UPI        : ${bankDetails!!.upi}")
+                        TextItem(field = "Address", value = bankDetails?.address ?: "Not Found")
+                        TextItem(field = "Bank", value = bankDetails?.bank ?: "Not Found")
+                        TextItem(field = "Bank Code", value = bankDetails?.bankCode ?: "Not Found")
+                        TextItem(field = "Branch", value = bankDetails?.branch ?: "Not Found")
+                        TextItem(field = "Centre", value = bankDetails?.centre ?: "Not Found")
+                        TextItem(field = "Contact", value = bankDetails?.contact ?: "Not Found")
+                        TextItem(field = "District", value = bankDetails?.district ?: "Not Found")
+                        TextItem(field = "IFSC", value = bankDetails?.ifsc ?: "Not Found")
+                        TextItem(
+                            field = "IMPS",
+                            value = bankDetails?.imps?.toString() ?: "Not Found"
+                        )
+                        TextItem(field = "ISO3166", value = bankDetails?.iso3166 ?: "Not Found")
+                        TextItem(field = "MICR", value = bankDetails?.micr ?: "Not Found")
+                        TextItem(
+                            field = "NEFT",
+                            value = bankDetails?.neft?.toString() ?: "Not Found"
+                        )
+                        TextItem(
+                            field = "RTGS",
+                            value = bankDetails?.rtgs?.toString() ?: "Not Found"
+                        )
+                        TextItem(field = "State", value = bankDetails?.state ?: "Not Found")
+                        TextItem(
+                            field = "SWIFT",
+                            value = bankDetails?.swift?.toString() ?: "Not Found"
+                        )
+                        TextItem(field = "UPI", value = bankDetails?.upi?.toString() ?: "Not Found")
                     }
                 } else {
                     if (networkIssue) {
+                        Text(
+                            text = "No internet",
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 22.sp
+                        )
+                    } else {
                         Text(text = errorText)
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun TextItem(field: String, value: String) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(text = field, modifier = Modifier.weight(.45f))
+        Text(text = ":", modifier = Modifier.weight(.1f))
+        Text(text = value, modifier = Modifier.weight(.45f))
     }
 }
 
